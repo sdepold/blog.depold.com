@@ -1,0 +1,15 @@
+<article class="post">
+  <header class="post-header">
+    <span class="post-meta">
+      <time datetime="<%= year %>-<%= month %>-<%= day %>">
+        <%= day %> <%= publishedAt.strftime("%b") %> <%= year %>
+      </time>
+    </span>
+    <h2 class="post-title"><%= title %></a></h2>
+  </header>
+  <section class="post-excerpt">
+    <p>
+      <%= Kramdown::Document.new(body).to_html %>
+    </p>
+  </section>
+</article>

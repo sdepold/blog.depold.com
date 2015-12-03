@@ -1,0 +1,12 @@
+---
+title: Welcome to Middleman
+---
+
+<%
+  posts = data.blog.posts
+  posts = posts.to_a.select{|id, p| p['published']}.sort_by{|id, p| p['publishedAt']}.reverse
+%>
+
+<% posts.each do |id, post| %>
+  <%= partial 'post', locals: { post: post } %>
+<% end %>
