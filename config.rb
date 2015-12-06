@@ -2,6 +2,8 @@ set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 set :images_dir, 'images'
 
+require 'redcarpet'
+
 BLOG_SPACE_ID = ENV['BLOG_SPACE_ID']
 ACCESS_TOKEN  = ENV['ACCESS_TOKEN']
 
@@ -13,11 +15,15 @@ class PostMapper < ContentfulMiddleman::Mapper::Base
   def map(context, entry)
     super
 
-    puts entry.published_at
-    publish_date  = entry.published_at
+    renderer     = Redcarpet::Render::HTML.new
+    markdown     = Redcarpet::Markdown.new(renderer, { fenced_code_blocks: true })
+    publish_date = entry.published_at
+
     context.year  = publish_date.year
     context.month = if publish_date.month >= 10 then publish_date.month else "0#{publish_date.month}" end
     context.day   = if publish_date.day >= 10 then publish_date.day else "0#{publish_date.day}" end
+    context.html  = markdown.render(entry.body)
+    context.html_snippet = Sanitize.clean(context.html)[0..250]
 
     if defined? entry.old_file_name and (not entry.old_file_name.nil?)
       context.slug = entry.old_file_name

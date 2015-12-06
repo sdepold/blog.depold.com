@@ -8,8 +8,6 @@
     <h2 class="post-title"><a href="/<%= post['slug'] %>"><%= post['title'] %></a></h2>
   </header>
   <section class="post-excerpt">
-    <p>
-      <%= Sanitize.clean(Kramdown::Document.new(post['body']).to_html)[0..250] %>
-    </p>
+    <p><%= post['html_snippet'] %></p>
   </section>
 </article>
