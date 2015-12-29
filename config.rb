@@ -18,20 +18,26 @@ class PostMapper < ContentfulMiddleman::Mapper::Base
     renderer     = Redcarpet::Render::HTML.new
     markdown     = Redcarpet::Markdown.new(renderer, { fenced_code_blocks: true })
     publish_date = entry.published_at
+    html         = markdown.render(entry.body)
 
-    context.year  = publish_date.year
-    context.month = if publish_date.month >= 10 then publish_date.month else "0#{publish_date.month}" end
-    context.day   = if publish_date.day >= 10 then publish_date.day else "0#{publish_date.day}" end
-    context.html  = markdown.render(entry.body)
-    context.html_snippet = Sanitize.clean(context.html)[0..250]
-
-    if defined? entry.old_file_name and (not entry.old_file_name.nil?)
-      context.slug = entry.old_file_name
+    slug = if defined?(entry.old_file_name) and (not entry.old_file_name.nil?)
+      entry.old_file_name
     else
-      context.slug = entry.title.parameterize
+      entry.title.parameterize
     end
 
-    context.published = true
+    context.post = {
+      'published_at' => publish_date,
+      'year' => publish_date.year,
+      'month' => (publish_date.month >= 10) ? publish_date.month : "0#{publish_date.month}",
+      'day' => (publish_date.day >= 10) ? publish_date.day : "0#{publish_date.day}",
+      'html' => html,
+      'html_snippet' => Sanitize.clean(html)[0..250],
+      'published' => true,
+      'slug' => slug,
+      'title' => entry.title,
+      'tags' => entry.tags.map(&:id)
+    }
   end
 end
 
@@ -40,7 +46,7 @@ activate :contentful do |f|
   f.access_token  = ACCESS_TOKEN
   f.cda_query     = { limit: 1000 }
   f.content_types = {
-    users: 'user',
+    authors: 'author',
     tags: 'tag',
     posts: { id: 'post', mapper: PostMapper }
   }

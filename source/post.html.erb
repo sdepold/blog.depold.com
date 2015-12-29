@@ -1,13 +1,8 @@
-<article class="post">
-  <header class="post-header">
-    <span class="post-meta">
-      <time datetime="<%= year %>-<%= month %>-<%= day %>">
-        <%= day %> <%= publishedAt.strftime("%b") %> <%= year %>
-      </time>
-    </span>
-    <h2 class="post-title"><%= title %></a></h2>
-  </header>
-  <section class="post-excerpt">
-    <p><%= html %></p>
-  </section>
-</article>
+<%=
+  partial 'post', locals: {
+    post: post,
+    is_single_post_view: true,
+    body_class: 'post-content',
+    body_property: 'html'
+  }
+%>

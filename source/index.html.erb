@@ -4,9 +4,18 @@ title: Sascha Depold ∴ Blog
 
 <%
   posts = data.blog.posts
-  posts = posts.to_a.select{|id, p| p['published']}.sort_by{|id, p| p['publishedAt']}.reverse
+  posts = posts.to_a.select{ |id, d| d.post['published'] }.sort_by{|id, d| d.post['published_at']}.reverse
 %>
 
-<% posts.each do |id, post| %>
-  <%= partial 'post', locals: { post: post } %>
-<% end %>
+<main role="main">
+  <% posts.each do |id, data| %>
+    <%=
+      partial 'post', locals: {
+        post: data.post,
+        is_single_post_view: false,
+        body_class: 'post-excerpt',
+        body_property: 'html_snippet'
+      }
+    %>
+  <% end %>
+</main>
