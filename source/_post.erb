@@ -3,7 +3,7 @@
     <span class="post-meta">
       <time datetime="<%= post['year'] %>-<%= post['month'] %>-<%= post['day'] %>">
         <%= post['day'] %> <%= post['published_at'].strftime("%b") %> <%= post['year'] %>
-        <%= "on #{post['tags'].join(' | ')}" if is_single_post_view && post['tags'] %>
+        <%= "on #{post['tags'].join(' | ')}" if post['tags'] %>
       </time>
     </span>
     <% if is_single_post_view %>
