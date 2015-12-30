@@ -5,14 +5,29 @@
         <%= post['day'] %> <%= post['published_at'].strftime("%b") %> <%= post['year'] %>
         <%= "on #{post['tags'].join(' | ')}" if post['tags'] %>
       </time>
+      <a href="http://blog.depold.com/<%= post['slug'] %>/#disqus_thread" class="comment-count"></a>
     </span>
     <% if is_single_post_view %>
       <h1 class="post-title"><%= post['title'] %></h1>
     <% else %>
-      <h2 class="post-title"><a href="/<%= post['slug'] %>"><%= post['title'] %></a></h2>
+      <h2 class="post-title"><a href="/<%= post['slug'] %>/"><%= post['title'] %></a></h2>
     <% end %>
   </header>
   <section class="<%= body_class %>">
     <p><%= post[body_property] %></p>
   </section>
+  <% if is_single_post_view %>
+    <footer class="post-footer">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      	var disqus_shortname = 'sdepold';
+      	(function() {
+      		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      	})();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </footer>
+  <% end %>
 </article>
