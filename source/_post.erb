@@ -3,7 +3,7 @@
     <span class="post-meta">
       <time datetime="<%= post['year'] %>-<%= post['month'] %>-<%= post['day'] %>">
         <%= post['day'] %> <%= post['published_at'].strftime("%b") %> <%= post['year'] %>
-        <%= "on #{post['tags'].join(' | ')}" if post['tags'] %>
+        <%= "on #{post['tags'].join(' | ')}" if post['tags'].present? %>
       </time>
       <a href="http://blog.depold.com/<%= post['slug'] %>/#disqus_thread" class="comment-count"></a>
     </span>
@@ -13,9 +13,11 @@
       <h2 class="post-title"><a href="/<%= post['slug'] %>/"><%= post['title'] %></a></h2>
     <% end %>
   </header>
+
   <section class="<%= body_class %>">
     <p><%= post[body_property] %></p>
   </section>
+
   <% if is_single_post_view %>
     <footer class="post-footer">
       <div id="disqus_thread"></div>
