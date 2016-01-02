@@ -26,13 +26,16 @@ class PostMapper < ContentfulMiddleman::Mapper::Base
       entry.title.parameterize
     end
 
+    html_snippet = Sanitize.clean(html)[0..250]
+    html_snippet += '...' if html.size > html_snippet.size
+
     context.post = {
       'published_at' => publish_date,
       'year' => publish_date.year,
       'month' => (publish_date.month >= 10) ? publish_date.month : "0#{publish_date.month}",
       'day' => (publish_date.day >= 10) ? publish_date.day : "0#{publish_date.day}",
       'html' => html,
-      'html_snippet' => Sanitize.clean(html)[0..250],
+      'html_snippet' => html_snippet,
       'published' => true,
       'slug' => slug,
       'title' => entry.title,
